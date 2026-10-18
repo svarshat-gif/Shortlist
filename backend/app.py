@@ -68,7 +68,12 @@ app=FastAPI(title='Shortlist',docs_url=None,redoc_url=None,lifespan=lifespan)
 async def privacy_headers(request,call_next):
     path=request.url.path
     if PUBLIC_DEMO and request.method in ('POST','PUT','PATCH','DELETE') and (
-        path=='/api/cvs' or path.startswith('/api/assistant/') or path.startswith('/api/history/')
+        path in ('/api/cvs','/api/job/file')
+        or (path.startswith('/api/assistant/') and path not in (
+            '/api/assistant/settings','/api/assistant/check','/api/assistant/retry'
+        ))
+        or path=='/api/assistant/intake'
+        or path.startswith('/api/history/')
     ):
         return JSONResponse({'detail':'This public demo uses fictional sample CVs only. Uploads, folder intake and saved-hire changes are disabled.'},status_code=403)
     if request.method not in ('GET','HEAD','OPTIONS'):
@@ -123,7 +128,10 @@ def login(body:Login,response:Response):
     if body.email.lower()!='recruiter@demo.com' or body.password!='demo123':
         raise HTTPException(401,'Those details did not match. Check your email and password, then try again.')
     sid=secrets.token_urlsafe(32)
-    SESSIONS[sid]=dict(expires=time.time()+TTL,job=None,weights=deepcopy(DEFAULT_WEIGHTS),candidates=[],files=[],overrides={},selected=[],records={},fairness=None,demo=True if PUBLIC_DEMO else body.demo,category='Experienced',agent=assistant_setup(False if PUBLIC_DEMO else body.assistant),closed=False)
+    agent=assistant_setup(False if PUBLIC_DEMO else body.assistant)
+    if PUBLIC_DEMO:
+        agent.update(source='samples',access_granted=True,folder_name='Fictional sample CVs',use_history=False)
+    SESSIONS[sid]=dict(expires=time.time()+TTL,job=None,weights=deepcopy(DEFAULT_WEIGHTS),candidates=[],files=[],overrides={},selected=[],records={},fairness=None,demo=True if PUBLIC_DEMO else body.demo,category='Experienced',agent=agent,closed=False)
     response.set_cookie('shortlist_session',sid,httponly=True,samesite='strict',secure=PUBLIC_DEMO)
     return view(SESSIONS[sid])
 
@@ -383,6 +391,10 @@ class AssistantSettings(BaseModel):
 @app.post('/api/assistant/settings')
 def assistant_settings(body:AssistantSettings,s=Depends(session)):
     updates=body.model_dump(exclude_none=True)
+    if PUBLIC_DEMO:
+        if body.source not in (None,'samples'):raise HTTPException(403,'The public demo assistant can only review fictional sample CVs.')
+        if body.use_history or body.live_research:raise HTTPException(403,'Past-hire comparison and public research are disabled in the sample-only demo.')
+        updates['source']='samples'
     live_research=updates.pop('live_research',None)
     if body.source is not None and body.source not in ('samples','inbox','browser'):raise HTTPException(400,'Choose a connected folder or sample CVs.')
     access_granted=s['agent']['access_granted'] or body.source=='samples'

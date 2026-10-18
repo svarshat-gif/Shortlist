@@ -28,7 +28,7 @@ The included `render.yaml` and `Dockerfile` configure a single-service deploymen
 
 To publish it, sign in to [Render](https://dashboard.render.com/blueprint/new), choose **New > Blueprint**, connect the `svarshat-gif/Shortlist` repository, select the `main` branch, review `render.yaml`, then choose **Deploy Blueprint**. Render will build the app and provide a public `*.onrender.com` URL. Commits pushed to the connected branch will deploy automatically. A Render URL is public and shareable, but it is not guaranteed to appear in search-engine results; share the full URL directly.
 
-The service is configured with `PUBLIC_DEMO=true`: it forces sample mode, allows the included fictional sample CVs, and rejects candidate CV uploads, assistant folder intake, and saved-hire changes. Sessions are temporary and the free service may sleep while idle. Use fictional data only. Do not share GitHub or hosting credentials in chat.
+The service is configured with `PUBLIC_DEMO=true`: it forces sample mode and allows the hiring assistant to run its agentic review pipeline against the included fictional sample CVs. It rejects candidate/job uploads, all personal folder intake, past-hire comparison, public research, and saved-hire changes. Optional connected-AI review notes are available only if the service has an `OPENAI_API_KEY`; otherwise the assistant runs its evidence-based checks locally. Sessions are temporary and the free service may sleep while idle. Use fictional data only. Do not share GitHub or hosting credentials in chat.
 
 ## The seven steps
 
