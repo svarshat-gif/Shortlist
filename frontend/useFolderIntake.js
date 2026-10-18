@@ -14,7 +14,7 @@ export function useFolderIntake({state,call,onState,active}){
   }
   async function choose(){
     setError('');
-    if(!window.showDirectoryPicker){setError('Choose a folder in Chrome or Edge, or create an app folder below.');return false;}
+    if(!window.showDirectoryPicker){setError('Choose a folder in Chrome or Edge. This browser does not support folder access.');return false;}
     try{
       const selected=await window.showDirectoryPicker({id:'shortlist-cvs',mode:'read',startIn:'documents'});
       let permission=await selected.queryPermission({mode:'read'});
@@ -24,7 +24,7 @@ export function useFolderIntake({state,call,onState,active}){
       const data=await call('/assistant/folder/connect',{name:selected.name,count:files.length,files:files.slice(0,8).map(f=>f.name),allowed:true});
       handle.current=selected;seen.current=new Set();observed.current=new Map(files.map(f=>[f.name,f.size+':'+f.lastModified]));
       onState(data);return true;
-    }catch(e){if(e.name!=='AbortError')setError('The folder could not be connected. Choose it again and allow read access, or create an app folder.');return false;}
+    }catch(e){if(e.name!=='AbortError')setError('The folder could not be connected. Choose it again and allow read access.');return false;}
   }
   async function refresh(){
     if(callbacks.current.state.assistant?.source!=='browser')return callbacks.current.call('/assistant/folder').then(callbacks.current.onState);

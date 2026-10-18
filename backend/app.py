@@ -70,12 +70,13 @@ async def privacy_headers(request,call_next):
     if PUBLIC_DEMO and request.method in ('POST','PUT','PATCH','DELETE') and (
         path in ('/api/cvs','/api/job/file')
         or (path.startswith('/api/assistant/') and path not in (
-            '/api/assistant/settings','/api/assistant/check','/api/assistant/retry'
+            '/api/assistant/settings','/api/assistant/check','/api/assistant/retry',
+            '/api/assistant/folder/connect','/api/assistant/folder/status',
+            '/api/assistant/folder/disconnect','/api/assistant/intake'
         ))
-        or path=='/api/assistant/intake'
         or path.startswith('/api/history/')
     ):
-        return JSONResponse({'detail':'This public demo uses fictional sample CVs only. Uploads, folder intake and saved-hire changes are disabled.'},status_code=403)
+        return JSONResponse({'detail':'This public demo allows fictional samples and CVs from a browser folder you explicitly select. Direct uploads, server-side folders, and saved-hire changes are disabled.'},status_code=403)
     if request.method not in ('GET','HEAD','OPTIONS'):
         origin=request.headers.get('origin')
         if origin and urlparse(origin).netloc != request.headers.get('host'):
@@ -392,9 +393,11 @@ class AssistantSettings(BaseModel):
 def assistant_settings(body:AssistantSettings,s=Depends(session)):
     updates=body.model_dump(exclude_none=True)
     if PUBLIC_DEMO:
-        if body.source not in (None,'samples'):raise HTTPException(403,'The public demo assistant can only review fictional sample CVs.')
-        if body.use_history or body.live_research:raise HTTPException(403,'Past-hire comparison and public research are disabled in the sample-only demo.')
-        updates['source']='samples'
+        if body.source not in (None,'samples','browser'):raise HTTPException(403,'Server-side folders are disabled in the public demo.')
+        if body.source=='browser' and (s['agent']['source']!='browser' or not s['agent']['access_granted']):
+            raise HTTPException(403,'Choose a browser folder and allow read access before using it.')
+        if body.use_history or body.live_research:raise HTTPException(403,'Past-hire comparison and public research are disabled in the public demo.')
+        if body.source=='samples':updates['use_history']=False
     live_research=updates.pop('live_research',None)
     if body.source is not None and body.source not in ('samples','inbox','browser'):raise HTTPException(400,'Choose a connected folder or sample CVs.')
     access_granted=s['agent']['access_granted'] or body.source=='samples'
