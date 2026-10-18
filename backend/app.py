@@ -68,15 +68,14 @@ app=FastAPI(title='Shortlist',docs_url=None,redoc_url=None,lifespan=lifespan)
 async def privacy_headers(request,call_next):
     path=request.url.path
     if PUBLIC_DEMO and request.method in ('POST','PUT','PATCH','DELETE') and (
-        path in ('/api/cvs','/api/job/file')
-        or (path.startswith('/api/assistant/') and path not in (
+        (path.startswith('/api/assistant/') and path not in (
             '/api/assistant/settings','/api/assistant/check','/api/assistant/retry',
             '/api/assistant/folder/connect','/api/assistant/folder/status',
             '/api/assistant/folder/disconnect','/api/assistant/intake'
         ))
         or path.startswith('/api/history/')
     ):
-        return JSONResponse({'detail':'This public demo allows fictional samples and CVs from a browser folder you explicitly select. Direct uploads, server-side folders, and saved-hire changes are disabled.'},status_code=403)
+        return JSONResponse({'detail':'That change is not available in this public demo. Direct job and CV uploads are processed in temporary session memory; server-side folders and saved-hire changes are disabled.'},status_code=403)
     if request.method not in ('GET','HEAD','OPTIONS'):
         origin=request.headers.get('origin')
         if origin and urlparse(origin).netloc != request.headers.get('host'):
