@@ -1,0 +1,11 @@
+Data Analyst
+Grove & Grain, a fictional consumer commerce company
+Bengaluru | Hybrid, 3 days in office
+Experience: 3 to 5 years
+Must-have skills: SQL, Python, Excel, Power BI
+Nice-to-have skills: Tableau, A/B testing
+Domain: e-commerce
+Education: Any degree or equivalent practical experience
+You will turn shopping and retention data into useful decisions. Build clear dashboards,
+investigate changes in conversion and explain findings to colleagues.
+We are looking for a rockstar who can own weekly reporting.

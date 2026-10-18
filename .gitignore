@@ -1,0 +1,12 @@
+.venv/
+.tools/
+node_modules/
+dist/
+.env
+__pycache__/
+.pytest_cache/
+test-results/
+*.log
+data/
+inbox/
+/artifacts/

@@ -1,0 +1,56 @@
+.scene-variant-1 .scene-tall{--bh:184px}
+.scene-variant-1 .scene-medium{--bh:128px}
+.scene-variant-1 .scene-short{--bh:80px;--by:148px}
+.scene-variant-1 .scene-model{animation:job-gentle-turn 18s ease-in-out infinite}
+.scene-variant-1 .scene-orbit{animation-duration:32s}
+
+.scene-variant-2 .scene-tall{--bx:84px;--by:136px;--bw:104px;--bd:24px;--bh:104px;transform:translateZ(0) rotateZ(-5deg)}
+.scene-variant-2 .scene-medium{--bx:184px;--by:128px;--bw:104px;--bd:24px;--bh:112px;transform:translateZ(12px)}
+.scene-variant-2 .scene-short{--bx:284px;--by:136px;--bw:104px;--bd:24px;--bh:104px;transform:translateZ(0) rotateZ(5deg)}
+.scene-variant-2 .scene-model{animation:cv-gentle-turn 20s ease-in-out infinite}
+.scene-variant-2 .scene-float{animation-duration:9s}
+.scene-variant-2 .scene-orbit{opacity:.55;animation-duration:28s}
+
+.scene-variant-3 .scene-tall{--bh:96px;--by:140px}
+.scene-variant-3 .scene-medium{--bh:152px;--by:112px}
+.scene-variant-3 .scene-short{--bh:120px;--by:128px}
+.scene-variant-3 .scene-model{animation:shortlist-gentle-turn 22s ease-in-out infinite}
+.scene-variant-3 .scene-orbit{opacity:.4;animation-duration:36s}
+.scene-variant-3 .scene-dot{animation:shortlist-marker 5s ease-in-out infinite}
+
+.scene-variant-4 .scene-tall{--bw:92px;--bd:36px;--bh:112px;--by:128px}
+.scene-variant-4 .scene-medium{--bw:92px;--bd:36px;--bh:112px;--by:128px}
+.scene-variant-4 .scene-short{--bw:92px;--bd:36px;--bh:112px;--by:128px}
+.scene-variant-4 .scene-orbit{width:260px;height:220px;opacity:.55;animation-duration:40s}
+.scene-variant-4 .scene-dot{animation:questions-prompt 4s ease-in-out infinite}
+
+.scene-variant-5 .scene-tall{--bh:88px;--by:144px}
+.scene-variant-5 .scene-medium{--bh:184px;--by:96px}
+.scene-variant-5 .scene-short{--bh:128px;--by:124px}
+.scene-variant-5 .scene-model{animation:market-gentle-turn 24s ease-in-out infinite}
+.scene-variant-5 .scene-orbit{width:260px;height:260px;animation-duration:36s}
+.scene-variant-5 .scene-dot{animation:market-indicator 5s ease-in-out infinite}
+
+.scene-variant-6 .scene-orbit{width:190px;height:190px;opacity:.72;animation-duration:28s}
+.scene-variant-6 .scene-orbit>span{border-radius:18%}
+.scene-variant-6 .scene-orbit:after{content:"";position:absolute;width:2px;height:42px;left:224px;top:224px;background:#4c8b7c;transform:rotate(-45deg);transform-origin:top center}
+.scene-variant-6 .scene-model{animation:search-gentle-turn 20s ease-in-out infinite}
+.scene-variant-6 .scene-dot{animation:search-focus 4s ease-in-out infinite}
+
+.scene-variant-7 .scene-tall,.scene-variant-7 .scene-short{--bh:112px;--by:132px}
+.scene-variant-7 .scene-medium{--bh:144px;--by:116px}
+.scene-variant-7 .scene-model{animation:brief-gentle-turn 24s ease-in-out infinite}
+.scene-variant-7 .scene-orbit{opacity:.35;animation-duration:42s}
+
+@keyframes job-gentle-turn{0%,100%{transform:rotateX(-18deg) rotateY(-28deg)}50%{transform:rotateX(-19deg) rotateY(-23deg)}}
+@keyframes cv-gentle-turn{0%,100%{transform:rotateX(-18deg) rotateY(-28deg)}50%{transform:rotateX(-17deg) rotateY(-25deg)}}
+@keyframes shortlist-gentle-turn{0%,100%{transform:rotateX(-18deg) rotateY(-28deg)}50%{transform:rotateX(-18deg) rotateY(-24deg)}}
+@keyframes shortlist-marker{0%,100%{transform:translateZ(68px) translateY(0)}50%{transform:translateZ(68px) translateY(-6px)}}
+@keyframes questions-prompt{0%,100%{transform:translateZ(68px) translateY(0) scale(1)}50%{transform:translateZ(68px) translateY(-5px) scale(1.04)}}
+@keyframes market-gentle-turn{0%,100%{transform:rotateX(-18deg) rotateY(-28deg)}50%{transform:rotateX(-20deg) rotateY(-25deg)}}
+@keyframes market-indicator{0%,100%{transform:translateZ(68px) translateY(0)}50%{transform:translateZ(68px) translateY(-7px)}}
+@keyframes search-gentle-turn{0%,100%{transform:rotateX(-18deg) rotateY(-28deg)}50%{transform:rotateX(-17deg) rotateY(-24deg)}}
+@keyframes search-focus{0%,100%{transform:translateZ(68px) scale(1)}50%{transform:translateZ(68px) scale(1.08)}}
+@keyframes brief-gentle-turn{0%,100%{transform:rotateX(-18deg) rotateY(-28deg)}50%{transform:rotateX(-17deg) rotateY(-26deg)}}
+
+@media(prefers-reduced-motion:reduce){.scene-variant-1 .scene-model,.scene-variant-1 .scene-orbit,.scene-variant-2 .scene-model,.scene-variant-2 .scene-float,.scene-variant-2 .scene-orbit,.scene-variant-3 .scene-model,.scene-variant-3 .scene-orbit,.scene-variant-3 .scene-dot,.scene-variant-4 .scene-orbit,.scene-variant-4 .scene-dot,.scene-variant-5 .scene-model,.scene-variant-5 .scene-orbit,.scene-variant-5 .scene-dot,.scene-variant-6 .scene-model,.scene-variant-6 .scene-orbit,.scene-variant-6 .scene-dot,.scene-variant-7 .scene-model,.scene-variant-7 .scene-orbit{animation:none!important}}

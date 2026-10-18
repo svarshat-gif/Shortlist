@@ -1,0 +1,22 @@
+{
+  "name": "shortlist-hiring-desk",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite --host 127.0.0.1",
+    "test:browser": "node tests/journey.mjs",
+    "test:assistant": "node tests/assistant.mjs",
+    "test:redesign": "node tests/redesign.mjs"
+  },
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "@playwright/test": "^1.55.0",
+    "vite": "^6.3.5"
+  }
+}
