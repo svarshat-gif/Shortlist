@@ -69,6 +69,7 @@ def test_public_demo_allows_explicit_browser_folder_intake_only(monkeypatch):
         assert folder.status_code == 200
         assert folder.json()['assistant']['source'] == 'browser'
         assert folder.json()['assistant']['access_granted'] is True
+        assert folder.json()['assistant']['enabled'] is True
         started = client.post('/api/assistant/settings', json={'enabled': True})
         assert started.status_code == 200
 

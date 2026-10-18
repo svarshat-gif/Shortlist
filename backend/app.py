@@ -472,6 +472,9 @@ def connect_browser_folder(body:FolderConnection,s=Depends(session)):
     pause_for_folder(s)
     a=s['agent'];a['source']='browser';a['folder_name']=body.name.strip();a['access_granted']=True
     a['browser_count']=body.count;a['browser_files']=[Path(f).name[:160] for f in body.files];a['stage']='Ready to start'
+    if PUBLIC_DEMO and s.get('job'):
+        a['enabled']=True;a['stage']='Reviewing selected CVs automatically';a['revision']+=1
+        assistant_log(s,'Automatic review started','The selected folder is monitored while this hiring desk is open.')
     assistant_log(s,'Folder connected',body.name.strip()+'. Read access allowed.')
     return view(s)
 
