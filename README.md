@@ -24,9 +24,11 @@ Keep that window open; press Ctrl+C to stop. This is a local prototype with a sh
 
 ## Optional public sample demo on Render
 
-The included `render.yaml` and `Dockerfile` configure a single-service deployment that serves both the frontend and API. Connect a GitHub repository containing this project to Render and create a Blueprint from `render.yaml`; Render can then build and redeploy on pushes to the connected branch. The service is configured with `PUBLIC_DEMO=true`: it forces sample mode, allows the included fictional sample CVs, and rejects candidate CV uploads, assistant folder intake, and saved-hire changes. Sessions are temporary and the free service may sleep while idle. Use fictional data only.
+The included `render.yaml` and `Dockerfile` configure a single-service deployment that serves both the frontend and API. The source is at [github.com/svarshat-gif/Shortlist](https://github.com/svarshat-gif/Shortlist).
 
-This workspace may not be connected to a GitHub repository yet. A public Render URL is not created until the project is pushed to a repository and the Blueprint is created in your Render account. Do not share GitHub or hosting credentials in chat.
+To publish it, sign in to [Render](https://dashboard.render.com/blueprint/new), choose **New > Blueprint**, connect the `svarshat-gif/Shortlist` repository, select the `main` branch, review `render.yaml`, then choose **Deploy Blueprint**. Render will build the app and provide a public `*.onrender.com` URL. Commits pushed to the connected branch will deploy automatically. A Render URL is public and shareable, but it is not guaranteed to appear in search-engine results; share the full URL directly.
+
+The service is configured with `PUBLIC_DEMO=true`: it forces sample mode, allows the included fictional sample CVs, and rejects candidate CV uploads, assistant folder intake, and saved-hire changes. Sessions are temporary and the free service may sleep while idle. Use fictional data only. Do not share GitHub or hosting credentials in chat.
 
 ## The seven steps
 
