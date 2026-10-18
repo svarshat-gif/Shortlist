@@ -12,19 +12,31 @@ export function useFolderIntake({state,call,onState,active}){
     }
     return files.sort((a,b)=>a.name.localeCompare(b.name));
   }
+  async function connect(selected){
+    let permission=await selected.queryPermission({mode:'read'});
+    if(permission!=='granted')permission=await selected.requestPermission({mode:'read'});
+    if(permission!=='granted'){setError('Read access was not allowed. Choose the folder again and allow access.');return false;}
+    const files=await list(selected);
+    const data=await callbacks.current.call('/assistant/folder/connect',{name:selected.name,count:files.length,files:files.slice(0,8).map(f=>f.name),allowed:true});
+    handle.current=selected;seen.current=new Set();observed.current=new Map(files.map(f=>[f.name,f.size+':'+f.lastModified]));
+    callbacks.current.onState(data);return true;
+  }
   async function choose(){
     setError('');
     if(!window.showDirectoryPicker){setError('Choose a folder in Chrome or Edge. This browser does not support folder access.');return false;}
     try{
       const selected=await window.showDirectoryPicker({id:'shortlist-cvs',mode:'read',startIn:'documents'});
-      let permission=await selected.queryPermission({mode:'read'});
-      if(permission!=='granted')permission=await selected.requestPermission({mode:'read'});
-      if(permission!=='granted'){setError('Read access was not allowed. Choose the folder again and allow access.');return false;}
-      const files=await list(selected);
-      const data=await call('/assistant/folder/connect',{name:selected.name,count:files.length,files:files.slice(0,8).map(f=>f.name),allowed:true});
-      handle.current=selected;seen.current=new Set();observed.current=new Map(files.map(f=>[f.name,f.size+':'+f.lastModified]));
-      onState(data);return true;
+      return await connect(selected);
     }catch(e){if(e.name!=='AbortError')setError('The folder could not be connected. Choose it again and allow read access.');return false;}
+  }
+  async function create(){
+    setError('');
+    if(!window.showDirectoryPicker){setError('Create a folder in Chrome or Edge. This browser does not support folder access.');return false;}
+    try{
+      const parent=await window.showDirectoryPicker({id:'shortlist-cvs-create',mode:'readwrite',startIn:'documents'});
+      const selected=await parent.getDirectoryHandle('Shortlist CVs',{create:true});
+      return await connect(selected);
+    }catch(e){if(e.name!=='AbortError')setError('The folder could not be created. Choose a writable location in Chrome or Edge and allow access.');return false;}
   }
   async function refresh(){
     if(callbacks.current.state.assistant?.source!=='browser')return callbacks.current.call('/assistant/folder').then(callbacks.current.onState);
@@ -72,5 +84,5 @@ export function useFolderIntake({state,call,onState,active}){
     scan();const timer=setInterval(scan,2000);
     return()=>{stopped=true;clearInterval(timer);};
   },[active,state.assistant?.enabled,state.assistant?.source,state.assistant?.access_granted,state.assistant?.retry_revision]);
-  return {choose,refresh,forget,error};
+  return {choose,create,refresh,forget,error};
 }
